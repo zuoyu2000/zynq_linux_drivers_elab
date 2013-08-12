@@ -18,7 +18,7 @@ version: https://github.com/Xilinx/linux-xlnx/commit/3f7c2d54957e950b3a36a251578
 
 
 Makefile:
-
+```
 obj-m  := zdma.o zchar.o
 
 # Path to the Linux kernel, if not passed in as arg, set default.
@@ -32,7 +32,7 @@ all:
 
 clean:
 	make -C $(KDIR) M=$(PWD) clean
-
+```
 
 
 Enjoy
