@@ -80,8 +80,8 @@ static int zchar_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Cannot request IO\n");
 		return -ENXIO;
 	}
-	
-	/* device constructor */
+
+	// device constructor:
 	printk(KERN_INFO "<%s> init: registered\n", MODULE_NAME);
 	if (alloc_chrdev_region(&dev_num, 0, 1, MODULE_NAME) < 0) {
 		return -1;
@@ -103,9 +103,8 @@ static int zchar_probe(struct platform_device *pdev)
 		return -1;
 	}
 
-	/* allocate mmap area */
+	// allocate mmap area:
 	zchar_addr = ioremap(res->start, MEM_LENGTH);
-
 	if (!zchar_addr) {
 		printk(KERN_ERR "<%s> Error: allocating memory failed\n",
 		       MODULE_NAME);
@@ -113,22 +112,37 @@ static int zchar_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-	return 0;//platform_driver_register(zchar_driver);
+	return 0;
+}
+
+static void zchar_shutdown(struct platform_device *pdev)
+{
+	iowrite32(0, zchar_addr); // not really needed here, but ...
 }
 
 static int zchar_remove(struct platform_device *pdev)
 {
-	/* device destructor */
+   zchar_shutdown(pdev);
+   
+	// device destructor:
 	cdev_del(&c_dev);
 	device_destroy(cl, dev_num);
 	class_destroy(cl);
 	unregister_chrdev_region(dev_num, 1);
 	printk(KERN_INFO "<%s> exit: unregistered\n", MODULE_NAME);
 
+	// free mmap area:
+	if (zchar_addr) {
+		iounmap(zchar_addr);
+	}
+	
+	// Release the region:
+	release_mem_region(res->start, MEM_LENGTH);
+	
 	return 0;
 }
 
-// platform driver structure for zchar driver
+// platform driver structure for zchar driver:
 static struct platform_driver zchar_driver = {
 	.driver = {
 		   .name = MODULE_NAME,
@@ -136,15 +150,14 @@ static struct platform_driver zchar_driver = {
 		   .of_match_table = zchar_of_match},
 	.probe = zchar_probe,
 	.remove = zchar_remove,
-	.shutdown = NULL
+	.shutdown = zchar_shutdown,
 };
 
-// Register zchar platform driver
+// Register zchar platform driver:
 module_platform_driver(zchar_driver);
 
 MODULE_AUTHOR("e-Lab");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION(MODULE_NAME "zchar");
 MODULE_ALIAS(MODULE_NAME);
-
 
