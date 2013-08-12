@@ -18,6 +18,10 @@ version: https://github.com/Xilinx/linux-xlnx/commit/3f7c2d54957e950b3a36a251578
 
 
 Makefile:
+
+set this variable (for example in your .cshrc):
+export KDIR=~/Desktop/linux-xlnx
+
 ```
 obj-m  := zdma.o zchar.o
 
