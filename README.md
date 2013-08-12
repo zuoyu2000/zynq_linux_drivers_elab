@@ -23,7 +23,7 @@ set this variable (for example in your .cshrc):
 
 export KDIR=~/Desktop/linux-xlnx
 
-Then run '''make'''
+Then run ```make```
 
 
 Enjoy
