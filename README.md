@@ -17,26 +17,13 @@ These were tested with: https://github.com/Xilinx/linux-xlnx
 version: https://github.com/Xilinx/linux-xlnx/commit/3f7c2d54957e950b3a36a251578185bfd374562c
 
 
-Makefile:
+Install:
 
 set this variable (for example in your .cshrc):
+
 export KDIR=~/Desktop/linux-xlnx
 
-```
-obj-m  := zdma.o zchar.o
-
-# Path to the Linux kernel, if not passed in as arg, set default.
-ifeq ($(KDIR),)
-  KDIR := /lib/modules/$(shell uname -r)/build
-endif
-
-
-all:
-	make -C $(KDIR) M=$(PWD) modules
-
-clean:
-	make -C $(KDIR) M=$(PWD) clean
-```
+Then run '''make'''
 
 
 Enjoy
