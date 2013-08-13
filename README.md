@@ -25,6 +25,8 @@ set this variable (for example in your .cshrc):
 
 Then run ```make```
 
+PS: this is also a full driver for AXI DMA from our group: https://github.com/culurciello/zync-xdma
+
 
 Enjoy
 E + eLab
